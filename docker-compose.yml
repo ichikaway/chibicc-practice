@@ -1,0 +1,9 @@
+version: '3'
+services:
+  test-gcc:
+    build:
+      context: ./
+    volumes:
+      - ./source:/root/source
+    working_dir: /root/source
+
