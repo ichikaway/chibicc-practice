@@ -8,4 +8,7 @@ test: 9cc
 clean:
 	rm -f 9cc *.o tmp*
 
+docker:
+	docker-compose build
+
 .PHONY: test clean
