@@ -77,7 +77,10 @@ Token *tokenize(char *p) {
 			continue;
 		}
 		if(*p == '+' || *p == '-') {
-			cur = new_token(TK_RESERVED, cur, p++);
+			//後置インクリメントのためわかりにくかったので、2つの処理に分割
+			//cur = new_token(TK_RESERVED, cur, p++);
+			cur = new_token(TK_RESERVED, cur, p);
+			p++;
 			continue;
 		}
 		if(isdigit(*p)) {
