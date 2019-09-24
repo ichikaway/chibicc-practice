@@ -169,7 +169,9 @@ Token *tokenize() {
 			p++;
 			continue;
 		}
-		if(*p == '+' || *p == '-') {
+		if(*p == '+' || *p == '-' || *p == '*' || *p == '/'
+			|| *p == '(' || *p == ')'	
+		) {
 			//後置インクリメントのためわかりにくかったので、2つの処理に分割
 			//cur = new_token(TK_RESERVED, cur, p++);
 			cur = new_token(TK_RESERVED, cur, p);
@@ -227,20 +229,15 @@ int main(int argc, char **argv)
 
 	user_input = argv[1];
 	token = tokenize();
+	Node *node = expr();
 
 	printf(".intel_syntax noprefix\n");
 	printf(".global main\n");
 	printf("main:\n");
-	printf("  mov rax, %d\n", expect_number());
 
-	while(!at_eof()) {
-		if (consume('+')) {
-			printf("  add rax, %d\n", expect_number());
-			continue;
-		}
-		expect('-');
-		printf("  sub rax, %d\n", expect_number());
-	}
+	gen(node);
+
+	printf("  pop rax\n");
 
 
 	printf("  ret\n");
