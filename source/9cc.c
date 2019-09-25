@@ -45,6 +45,7 @@ struct Token {
 	Token *next;
 	int val;
 	char *str;
+	int len;
 };
 
 void error_at(char *loc, char *fmt, ...) {
@@ -69,7 +70,10 @@ void error(char *fmt, ...) {
 }
 
 bool consume(char op) {
-	if (token->kind != TK_RESERVED || token->str[0] != op) {
+	if (token->kind != TK_RESERVED ||
+		strlen(op) != token->len ||
+		memcmp(token->str, op, token->len))
+	{
 		return false;
 	}
 	token = token->next;
@@ -77,7 +81,10 @@ bool consume(char op) {
 }
 
 void expect(char op) {
-	if (token->kind != TK_RESERVED || token->str[0] != op) {
+	if (token->kind != TK_RESERVED || 
+		strlen(op) != token->len ||
+		memcmp(token->str, op, token->len))
+	{
 		error_at(token->str, "'%c'ではありません", op);
 	}
 	token = token->next;
@@ -160,10 +167,11 @@ Node *unary() {
 }
 
 
-Token *new_token(TokenKind kind, Token *cur, char *str) {
+Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
 	Token *tok = calloc(1, sizeof(Token));
 	tok->kind = kind;
 	tok->str = str;
+	tok->len = len;
 	cur->next = tok;
 	return tok;
 }
@@ -184,13 +192,15 @@ Token *tokenize() {
 		) {
 			//後置インクリメントのためわかりにくかったので、2つの処理に分割
 			//cur = new_token(TK_RESERVED, cur, p++);
-			cur = new_token(TK_RESERVED, cur, p);
+			cur = new_token(TK_RESERVED, cur, p, 1);
 			p++;
 			continue;
 		}
 		if(isdigit(*p)) {
-			cur = new_token(TK_NUM, cur, p);
+			cur = new_token(TK_NUM, cur, p, 0);
+			char *q = p;
 			cur->val = strtol(p, &p, 10);
+			cur->len = p - q;
 			continue;
 		}
 		error_at(p, "expected number");
