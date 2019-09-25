@@ -244,6 +244,7 @@ Token *tokenize() {
 
 		if(*p == '+' || *p == '-' || *p == '*' || *p == '/'
 			|| *p == '(' || *p == ')'	
+			|| *p == '>' || *p == '<'	
 		) {
 			//後置インクリメントのためわかりにくかったので、2つの処理に分割
 			//cur = new_token(TK_RESERVED, cur, p++);
@@ -289,6 +290,26 @@ void gen(Node *node) {
 	case ND_DIV:
 		printf("  cqo\n");
 		printf("  idiv rdi\n");
+		break;
+	case ND_EQ:
+		printf("  cmp rax, rdi\n");
+		printf("  sete al\n");
+		printf("  movzb rax, al\n");
+		break;
+	case ND_NE:
+		printf("  cmp rax, rdi\n");
+		printf("  setne al\n");
+		printf("  movzb rax, al\n");
+		break;
+	case ND_LT:
+		printf("  cmp rax, rdi\n");
+		printf("  setl al\n");
+		printf("  movzb rax, al\n");
+		break;
+	case ND_LE:
+		printf("  cmp rax, rdi\n");
+		printf("  setle al\n");
+		printf("  movzb rax, al\n");
 		break;
 	}
 
