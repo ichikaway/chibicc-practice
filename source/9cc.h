@@ -23,6 +23,7 @@ typedef enum {
 	ND_LT,
 	ND_LE,
 	ND_ASSIGN,
+	ND_LVAR,
 } NodeKind;
 
 
@@ -30,7 +31,8 @@ struct Node {
 	NodeKind kind;
 	Node *lhs;
 	Node *rhs;
-	int val;
+	int val; // kindがND_NUMの場合のみ使う
+	int offset; // kindがND_LVARの場合のみ使う
 };
 
 typedef enum {
@@ -57,6 +59,8 @@ bool consume(char *op);
 void expect(char *op);
 int expect_number();
 bool at_eof();
+Token *consume_ident(void);
+
 
 Node *new_node(NodeKind kind, Node *lhs, Node *rhs);
 Node *new_node_num(int val);
