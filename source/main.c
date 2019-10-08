@@ -2,6 +2,7 @@
 
 Token *token;
 char *user_input;
+Node *code[100];
 
 int main(int argc, char **argv)
 {
@@ -12,13 +13,15 @@ int main(int argc, char **argv)
 
 	user_input = argv[1];
 	token = tokenize();
-	Node *node = expr();
+	program();
 
 	printf(".intel_syntax noprefix\n");
 	printf(".global main\n");
 	printf("main:\n");
 
-	gen(node);
+	for (int i = 0 ; code[i] ; i++) {
+		gen(code[i]);
+	}
 
 	printf("  pop rax\n");
 
