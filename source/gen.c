@@ -27,7 +27,7 @@ void gen(Node *node) {
 
 		printf("  pop rdi\n");
 		printf("  pop rax\n");
-		printf("  move [rax], rdi\n");
+		printf("  mov [rax], rdi\n");
 		printf("  push rdi\n");
 		return;
 	}
