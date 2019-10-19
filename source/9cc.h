@@ -10,7 +10,7 @@ typedef struct Token Token;
 
 extern Token *token;
 extern char *user_input;
-
+extern Node *code[100];
 
 typedef enum {
 	ND_ADD,
@@ -60,7 +60,6 @@ void expect(char *op);
 int expect_number();
 bool at_eof();
 Token *consume_ident(void);
-
 
 Node *new_node(NodeKind kind, Node *lhs, Node *rhs);
 Node *new_node_num(int val);

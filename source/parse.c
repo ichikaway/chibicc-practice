@@ -5,7 +5,6 @@ char *user_input;
 Node *code[100];
 
 
-
 Node *new_node(NodeKind kind, Node *lhs, Node *rhs) {
 	Node *node = calloc(1, sizeof(Node));
 	node->kind = kind;
