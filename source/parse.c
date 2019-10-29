@@ -122,7 +122,11 @@ Node *primary() {
 			lvar->next = locals;
 			lvar->name = tok->str;
 			lvar->len = tok->len;
-			lvar->offset = locals->offset + 8;
+			if (locals) {
+				lvar->offset = locals->offset + 8;
+			} else {
+				lvar->offset = 8;
+			}
 			node->offset = lvar->offset;
 			locals = lvar;
 		}
