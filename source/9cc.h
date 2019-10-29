@@ -7,10 +7,13 @@
 
 typedef struct Node Node;
 typedef struct Token Token;
+typedef struct LVar LVar;
 
 extern Token *token;
 extern char *user_input;
 extern Node *code[100];
+extern LVar *locals;
+
 
 typedef enum {
 	ND_ADD,
@@ -26,6 +29,12 @@ typedef enum {
 	ND_LVAR,
 } NodeKind;
 
+struct LVar {
+	LVar *next;
+	char *name;
+	int len;
+	int offset;
+};
 
 struct Node {
 	NodeKind kind;
