@@ -51,7 +51,10 @@ try 0 '1 >= 2;'
 try 3 '1; 2; 3;'
 
 try 3 'a = 3;'
-try 3 'a = b = 3;'
+try 4 'a = b = 4;'
 
+try 5 'foo = 5;'
+
+try 6 'return 3+3;'
 
 echo ok

@@ -27,7 +27,7 @@ void error(char *fmt, ...) {
 }
 
 bool consume(char *op) {
-	if (token->kind != TK_RESERVED ||
+	if ((token->kind != TK_RESERVED && token->kind != TK_RETURN) ||
 		strlen(op) != token->len ||
 		memcmp(token->str, op, token->len))
 	{
@@ -47,7 +47,7 @@ Token *consume_ident(void) {
 }
 
 void expect(char *op) {
-	if (token->kind != TK_RESERVED || 
+	if ((token->kind != TK_RESERVED && token->kind != TK_RETURN) ||
 		strlen(op) != token->len ||
 		memcmp(token->str, op, token->len))
 	{
