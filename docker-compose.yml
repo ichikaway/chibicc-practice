@@ -6,4 +6,7 @@ services:
     volumes:
       - ./source:/root/source
     working_dir: /root/source
-
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
