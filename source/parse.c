@@ -29,6 +29,48 @@ Node *new_node_num(int val) {
 	return node;
 }
 
+bool at_eof() {
+    return token->kind == TK_EOF;
+}
+bool consume(char *op) {
+    if ((token->kind != TK_RESERVED && token->kind != TK_RETURN) ||
+        strlen(op) != token->len ||
+        memcmp(token->str, op, token->len))
+    {
+        return false;
+    }
+    token = token->next;
+    return true;
+}
+
+Token *consume_ident(void) {
+    if (token->kind != TK_IDENT) {
+        return NULL;
+    }
+    Token *t = token;
+    token = token->next;
+    return t;
+}
+
+void expect(char *op) {
+    if ((token->kind != TK_RESERVED && token->kind != TK_RETURN) ||
+        strlen(op) != token->len ||
+        memcmp(token->str, op, token->len))
+    {
+        error_at(token->str, "'%c'ではありません", op);
+    }
+    token = token->next;
+}
+
+int expect_number() {
+    if (token->kind != TK_NUM) {
+        error_at(token->str, "数ではありません");
+    }
+    int val = token->val;
+    token = token->next;
+    return val;
+}
+
 void program() {
 	locals = NULL;
 	int i = 0;
